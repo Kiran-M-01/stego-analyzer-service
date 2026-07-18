@@ -14,3 +14,14 @@ class PairStatistics:
     observed_odd: int
 
     expected: float
+
+
+@dataclass
+class ChiSquareResult:
+    """
+    Result of the Chi-Square analysis for a single color channel.
+    """
+
+    statistic: float
+    p_value: float
+    suspicious: bool
