@@ -63,5 +63,5 @@ class ChiSquareAnalyzer:
         return ChiSquareResult(
             statistic=float(statistic),
             p_value=float(p_value),
-            suspicious=bool(suspicious)
+            suspicious=None
         )
