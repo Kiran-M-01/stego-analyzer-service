@@ -1,9 +1,12 @@
+import numpy as np
 from scipy.stats import chi2
 
 from analyzer.models import (
     PairStatistics,
     ChiSquareResult
 )
+from analyzer.histogram import HistogramAnalyzer
+from analyzer.statistics import ChiSquareStatistics
 
 
 class ChiSquareAnalyzer:
@@ -58,10 +61,49 @@ class ChiSquareAnalyzer:
             )
         )
 
-        suspicious = p_value < 0.05
+        # BUG FIX: this was `p_value < 0.05`, which is backwards.
+        # The null hypothesis here is "the pairs ARE equalized" (i.e.
+        # embedding occurred) -- a HIGH p-value means the histogram
+        # matches that pattern closely, which is the suspicious case.
+        suspicious = p_value > 0.95
 
         return ChiSquareResult(
             statistic=float(statistic),
             p_value=float(p_value),
-            suspicious=None
+            # BUG FIX: this was hardcoded to None, so the field was
+            # always empty regardless of the computed value above.
+            suspicious=bool(suspicious)
         )
+
+    @staticmethod
+    def analyze_windowed(channel: np.ndarray, num_windows: int = 128) -> ChiSquareResult:
+        """
+        A real hidden message is usually tiny compared to the whole
+        image (a short text message vs. a multi-megapixel photo). Run
+        whole-image chi-square on that and the embedded region gets
+        drowned out by the vast majority of untouched pixels, producing
+        a p-value near 0 even when a message IS present.
+
+        This splits the channel into sequential windows and returns the
+        strongest (max p-value) result across them, so a small embedded
+        region is caught instead of averaged away.
+        """
+        flat = channel.flatten()
+        chunk_size = max(1, len(flat) // num_windows)
+
+        best = None
+        for i in range(num_windows):
+            start = i * chunk_size
+            end = len(flat) if i == num_windows - 1 else start + chunk_size
+            chunk = flat[start:end]
+            if chunk.size == 0:
+                continue
+
+            histogram = HistogramAnalyzer.calculate(chunk)
+            pair_statistics = ChiSquareStatistics.observed_expected(histogram)
+            result = ChiSquareAnalyzer.analyze_channel(pair_statistics)
+
+            if best is None or result.p_value > best.p_value:
+                best = result
+
+        return best

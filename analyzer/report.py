@@ -1,17 +1,24 @@
 from utils.channel_extractor import ChannelExtractor
 
-from analyzer.histogram import HistogramAnalyzer
-from analyzer.statistics import ChiSquareStatistics
 from analyzer.chi_square import ChiSquareAnalyzer
 from analyzer.entropy import EntropyAnalyzer
 from analyzer.variance import VarianceAnalyzer
 from analyzer.scorer import ConfidenceScorer
+from analyzer.pixel_difference import PixelDifferenceAnalyzer
 
 
 class ReportAnalyzer:
 
     @staticmethod
     def analyze(image):
+
+        print("=" * 50)
+        print(image.shape)
+        print(image.dtype)
+        print(image.min())
+        print(image.max())
+        print("=" * 50)
+        print(image[0:5, 0:5])
 
         channels = {
             "red": ChannelExtractor.red(image),
@@ -23,17 +30,19 @@ class ReportAnalyzer:
 
         for name, channel in channels.items():
 
-            histogram = HistogramAnalyzer.calculate(channel)
+            pixel_difference = PixelDifferenceAnalyzer.calculate(channel)
 
-            pair_statistics = (
-                ChiSquareStatistics.observed_expected(
-                    histogram
-                )
-            )
+            print("\n========================")
+            print(name.upper())
+            print("========================")
+            print(pixel_difference)
 
+            # Windowed, not whole-image: a real hidden message is small
+            # relative to the image, so whole-image chi-square dilutes
+            # the signal to ~0 even when something IS embedded.
             chi_square = (
-                ChiSquareAnalyzer.analyze_channel(
-                    pair_statistics
+                ChiSquareAnalyzer.analyze_windowed(
+                    channel
                 )
             )
 
@@ -57,7 +66,11 @@ class ReportAnalyzer:
                 },
                 "entropy": entropy,
                 "variance": variance,
+                "pixel_difference": pixel_difference
+
+
             }
+            
 
         summary = ConfidenceScorer.calculate(report)
 
