@@ -1,4 +1,9 @@
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
+ALLOWED_EXTENSIONS = {
+    "png",
+    "jpg",
+    "jpeg",
+    "bmp"
+}
 
 RGB_CHANNELS = {
     "red": 0,
