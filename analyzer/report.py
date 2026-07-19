@@ -5,6 +5,7 @@ from analyzer.statistics import ChiSquareStatistics
 from analyzer.chi_square import ChiSquareAnalyzer
 from analyzer.entropy import EntropyAnalyzer
 from analyzer.variance import VarianceAnalyzer
+from analyzer.scorer import ConfidenceScorer
 
 
 class ReportAnalyzer:
@@ -58,4 +59,9 @@ class ReportAnalyzer:
                 "variance": variance,
             }
 
-        return report
+        summary = ConfidenceScorer.calculate(report)
+
+        return {
+            "summary": summary,
+            "channels": report
+}       
