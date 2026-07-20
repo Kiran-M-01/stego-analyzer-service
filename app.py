@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, render_template, request
 from config import Config
 from routes.analyze import analyze_bp
-from flask import Flask, render_template, request
+
 
 from utils.image_loader import ImageLoader
 from analyzer.report import ReportAnalyzer
@@ -21,14 +21,14 @@ def create_app():
 app = create_app()
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html",title="Image Analysis Microservice")
 
 
 @app.route("/analyze-web", methods=["GET", "POST"])
 def analyze_web():
 
     if request.method == "GET":
-        return render_template("index.html")
+        return render_template("index.html",title="Image Analysis Microservice")
 
     if "image" not in request.files:
         return render_template(
@@ -50,16 +50,21 @@ def analyze_web():
             error="Unsupported file format."
         )
 
-    image, metadata = ImageLoader.load_image(file)
+    try:
+        image, metadata = ImageLoader.load_image(file)
 
-    report = ReportAnalyzer.analyze(image)
+        report = ReportAnalyzer.analyze(image)
 
-    return render_template(
-        "index.html",
-        metadata=metadata,
-        analysis=report
-    )
-
+        return render_template(
+            "index.html",
+            metadata=metadata,
+            analysis=report
+        )
+    except Exception as e:
+        return render_template(
+            "index.html",
+            error=str(e)
+        )
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stego Image Analyzer</title>
+    <title>{{ title or "Image Analysis Microservice" }}</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -12,7 +12,10 @@
 
     <div class="container">
 
-        <h1>Stego Image Analyzer</h1>
+        <<h1>Image Analysis Microservice</h1>
+        <p class="subtitle">
+        Statistical analysis of digital images for steganography detection.
+        </p>
 
         <div class="card">
 
@@ -60,11 +63,26 @@
 
             </form>
 
-            {% if analysis %}
+{% if analysis %}
 
 <hr>
 
 <h2>Analysis Result</h2>
+
+{% if metadata %}
+
+<hr>
+
+<h2>Image Information</h2>
+
+<p><strong>Filename:</strong> {{ metadata.filename }}</p>
+<p><strong>Format:</strong> {{ metadata.format }}</p>
+<p><strong>Dimensions:</strong> {{ metadata.width }} × {{ metadata.height }}</p>
+<p><strong>Mode:</strong> {{ metadata.mode }}</p>
+<p><strong>Channels:</strong> {{ metadata.channels }}</p>
+<p><strong>File Size:</strong> {{ metadata.file_size_kb }} KB</p>
+
+{% endif %}
 
 <h3>Summary</h3>
 
@@ -78,12 +96,49 @@
 
 
 
+<hr>
+
+<h2>Channel Analysis</h2>
+
+{% for channel, result in analysis.channels.items() %}
+
+<h3>{{ channel|capitalize }} Channel</h3>
+
+<p><strong>Entropy:</strong> {{ result.entropy }}</p>
+
+<p><strong>Variance:</strong> {{ result.variance }}</p>
+
+<p><strong>Chi-Square:</strong> {{ result.chi_square.statistic }}</p>
+
+<p><strong>P-Value:</strong> {{ result.chi_square.p_value }}</p>
+
+<p><strong>Suspicious:</strong> {{ result.chi_square.suspicious }}</p>
+
+<p><strong>Pixel Difference:</strong></p>
+
+<ul>
+    <li>Mean: {{ result.pixel_difference.mean }}</li>
+    <li>Standard Deviation: {{ result.pixel_difference.standard_deviation }}</li>
+</ul>
+
+<hr>
+
+{% endfor %}
+
+
 {% endif %}
 
 
         </div>
 
     </div>
+
+
+<footer>
+<hr>
+<p>Image Analysis Microservice • Flask • NumPy • SciPy • Pillow</p>
+
+</footer>
 
 </body>
 </html>
