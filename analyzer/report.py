@@ -12,18 +12,19 @@ class ReportAnalyzer:
     @staticmethod
     def analyze(image):
 
-        print("=" * 50)
-        print(image.shape)
-        print(image.dtype)
-        print(image.min())
-        print(image.max())
-        print("=" * 50)
-        print(image[0:5, 0:5])
-
         channels = {
             "red": ChannelExtractor.red(image),
             "green": ChannelExtractor.green(image),
             "blue": ChannelExtractor.blue(image),
+        }
+
+        height, width = image.shape[:2]
+
+        metadata = {
+            "width": width,
+            "height": height,
+            "channels": image.shape[2] if len(image.shape) == 3 else 1,
+            "dtype": str(image.dtype)
         }
 
         report = {}
@@ -32,10 +33,6 @@ class ReportAnalyzer:
 
             pixel_difference = PixelDifferenceAnalyzer.calculate(channel)
 
-            print("\n========================")
-            print(name.upper())
-            print("========================")
-            print(pixel_difference)
 
             # Windowed, not whole-image: a real hidden message is small
             # relative to the image, so whole-image chi-square dilutes
@@ -75,6 +72,7 @@ class ReportAnalyzer:
         summary = ConfidenceScorer.calculate(report)
 
         return {
+            "metadata": metadata,
             "summary": summary,
             "channels": report
 }       
