@@ -36,7 +36,7 @@
             <hr>
 
             {% if error %}
-            <div style="color:red; margin-bottom:15px;">
+            <div class="error">
             {{ error }}
             </div>
             {% endif %}
@@ -67,7 +67,7 @@
 
 <hr>
 
-<h2>Analysis Result</h2>
+<h2>Analysis Report</h2>
 
 {% if metadata %}
 
@@ -75,12 +75,12 @@
 
 <h2>Image Information</h2>
 
-<p><strong>Filename:</strong> {{ metadata.filename }}</p>
-<p><strong>Format:</strong> {{ metadata.format }}</p>
+<!-- <p><strong>Filename:</strong> {{ metadata.filename }}</p> -->
+<!-- <p><strong>Format:</strong> {{ metadata.format }}</p> -->
 <p><strong>Dimensions:</strong> {{ metadata.width }} × {{ metadata.height }}</p>
 <p><strong>Mode:</strong> {{ metadata.mode }}</p>
-<p><strong>Channels:</strong> {{ metadata.channels }}</p>
-<p><strong>File Size:</strong> {{ metadata.file_size_kb }} KB</p>
+<!-- <p><strong>Channels:</strong> {{ metadata.channels }}</p> -->
+<!-- <p><strong>File Size:</strong> {{ metadata.file_size_kb }} KB</p> -->
 
 {% endif %}
 
@@ -98,28 +98,28 @@
 
 <hr>
 
-<h2>Channel Analysis</h2>
+<h2>Per-Channel Analysis</h2>
 
 {% for channel, result in analysis.channels.items() %}
 
 <h3>{{ channel|capitalize }} Channel</h3>
 
-<p><strong>Entropy:</strong> {{ result.entropy }}</p>
+<p><strong>Entropy:</strong> {{ result.entropy|round(4) }}</p>
 
-<p><strong>Variance:</strong> {{ result.variance }}</p>
+<p><strong>Variance:</strong> {{ result.variance|round(4) }}</p>
 
-<p><strong>Chi-Square:</strong> {{ result.chi_square.statistic }}</p>
+<!-- <p><strong>Chi-Square:</strong> {{ result.chi_square.statistic }}</p> -->
 
-<p><strong>P-Value:</strong> {{ result.chi_square.p_value }}</p>
+<p><strong>P-Value:</strong> {{ result.chi_square.p_value|round(4) }}</p>
 
-<p><strong>Suspicious:</strong> {{ result.chi_square.suspicious }}</p>
+<!-- <p><strong>Suspicious:</strong> {{ result.chi_square.suspicious }}</p> -->
 
-<p><strong>Pixel Difference:</strong></p>
+<!-- <p><strong>Pixel Difference:</strong></p> -->
 
-<ul>
+<!-- <ul>
     <li>Mean: {{ result.pixel_difference.mean }}</li>
     <li>Standard Deviation: {{ result.pixel_difference.standard_deviation }}</li>
-</ul>
+</ul> -->
 
 <hr>
 

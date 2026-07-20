@@ -1,40 +1,186 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background:#f4f4f4;
-    margin:0;
-    padding:40px;
+/* ------------------------------
+   Global
+------------------------------ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.container{
-    max-width:700px;
-    margin:auto;
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #ffffff;
+    color: #111111;
+    line-height: 1.6;
 }
 
-.card{
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
+/* ------------------------------
+   Page Title
+------------------------------ */
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    font-weight: 700;
 }
 
-h1{
-    text-align:center;
+.subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 35px;
 }
 
-button{
-    padding:12px 24px;
-    cursor:pointer;
-    border:none;
-    background:#2563eb;
-    color:white;
-    border-radius:6px;
-    font-size:16px;
+/* ------------------------------
+   Main Container
+------------------------------ */
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto 40px;
 }
 
-button:hover{
-    background:#1d4ed8;
+/* ------------------------------
+   Card
+------------------------------ */
+
+.card {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 25px;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
 }
 
-hr{
-    margin:20px 0;
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+/* ------------------------------
+   Headings
+------------------------------ */
+
+h2 {
+    margin-bottom: 18px;
+    border-bottom: 2px solid #111;
+    padding-bottom: 8px;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+/* ------------------------------
+   Form
+------------------------------ */
+
+label {
+    font-weight: 600;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #111;
+    border-radius: 6px;
+    background: #fff;
+}
+
+/* ------------------------------
+   Button
+------------------------------ */
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                transform 0.2s ease;
+}
+
+button:hover {
+    background: #333;
+    transform: scale(1.02);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* ------------------------------
+   Information
+------------------------------ */
+
+p {
+    margin: 8px 0;
+}
+
+strong {
+    display: inline-block;
+    min-width: 210px;
+}
+
+/* ------------------------------
+   Horizontal Rule
+------------------------------ */
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 25px 0;
+}
+
+/* ------------------------------
+   Error
+------------------------------ */
+
+.error {
+    color: #000;
+    background: #f3f3f3;
+    border-left: 5px solid #111;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+
+/* ------------------------------
+   Footer
+------------------------------ */
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ------------------------------
+   Responsive
+------------------------------ */
+
+@media (max-width: 768px) {
+
+    .card {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    strong {
+        display: block;
+        margin-bottom: 4px;
+    }
 }
